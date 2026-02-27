@@ -11,7 +11,6 @@ from clinic_api.apps.users.serializers import (
 )
 from clinic_api.apps.users.permissions import IsAdmin, IsOwner, IsAdminOrReadOnly
 
-# timeslot model used in doctor action
 from clinic_api.apps.doctors.models import TimeSlot
 
 
@@ -22,7 +21,6 @@ class UserRegistrationView(generics.CreateAPIView):
     permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
-        # serializer already handles profile creation
         serializer.save()
 
 
@@ -34,10 +32,8 @@ class UserViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'username']
 
     def get_permissions(self):
-        # allow anyone to hit 'me' (they must be authenticated inside)
         if self.action == 'me':
             return [permissions.IsAuthenticated()]
-        # list/detail/create/update/delete are admin-only
         return [IsAdmin()]
 
     def get_serializer_class(self):

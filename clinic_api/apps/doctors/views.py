@@ -9,13 +9,13 @@ from clinic_api.apps.users.permissions import IsDoctor, IsAdmin, IsOwner
 
 class TimeSlotViewSet(viewsets.ModelViewSet):
 
-    # The list endpoint returns the calling doctor's slots; admins see everything.
+    
 
     queryset = TimeSlot.objects.select_related('doctor').all()
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['date', 'doctor__first_name', 'doctor__last_name']
     ordering_fields = ['date', 'start_time']
-    # allow filtering by date and availability
+    
     def filter_queryset(self, queryset):
         qs = super().filter_queryset(queryset)
         params = self.request.query_params
@@ -33,7 +33,6 @@ class TimeSlotViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [permissions.IsAuthenticated()]
-        # create/update/delete allowed for authenticated doctors or admins
         return [permissions.IsAuthenticated(), IsDoctor()]
 
     def get_serializer_class(self):
@@ -51,8 +50,6 @@ class TimeSlotViewSet(viewsets.ModelViewSet):
         return qs.none()
 
     def perform_create(self, serializer):
-        # enforce that a doctor can only create slots for themself
-        # and make sure a new slot is marked available by default
         serializer.save(doctor=self.request.user, is_available=True)
 
     @action(detail=False, methods=['get'], url_path='mine')

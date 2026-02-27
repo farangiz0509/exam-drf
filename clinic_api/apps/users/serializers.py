@@ -20,7 +20,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if data['password'] != data.pop('password2'):
             raise serializers.ValidationError({"password": "Passwords must match."})
         
-        # Additional validation for role
         if data.get('role') not in ['doctor', 'patient', 'admin']:
             raise serializers.ValidationError({"role": "Invalid role"})
         
@@ -29,7 +28,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
         
-        # Create profile based on role
         if user.role == 'doctor':
             DoctorProfile.objects.create(
                 user=user,
@@ -64,7 +62,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
 
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
-    """Serializer for doctor profile"""
     
     user = UserSerializer(read_only=True)
     
@@ -75,7 +72,6 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 
 
 class DoctorProfileUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for updating doctor profile"""
     
     class Meta:
         model = DoctorProfile
@@ -83,7 +79,6 @@ class DoctorProfileUpdateSerializer(serializers.ModelSerializer):
 
 
 class PatientProfileSerializer(serializers.ModelSerializer):
-    """Serializer for patient profile"""
     
     user = UserSerializer(read_only=True)
     
@@ -94,7 +89,6 @@ class PatientProfileSerializer(serializers.ModelSerializer):
 
 
 class PatientProfileUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for updating patient profile"""
     
     class Meta:
         model = PatientProfile
@@ -102,7 +96,6 @@ class PatientProfileUpdateSerializer(serializers.ModelSerializer):
 
 
 class TimeSlotSerializer(serializers.ModelSerializer):
-    """Serializer for time slots"""
     
     doctor_name = serializers.CharField(source='doctor.get_full_name', read_only=True)
     
@@ -112,11 +105,9 @@ class TimeSlotSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'created_at']
     
     def validate(self, data):
-        """Validate time slot"""
         if data['start_time'] >= data['end_time']:
             raise serializers.ValidationError("Start time must be before end time")
         
-        # Check for overlapping time slots
         existing_slots = TimeSlot.objects.filter(
             doctor=data['doctor'],
             date=data['date']
@@ -130,7 +121,6 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 
 
 class TimeSlotDetailSerializer(serializers.ModelSerializer):
-    """Detailed serializer for time slots"""
     
     doctor = UserSerializer(read_only=True)
     

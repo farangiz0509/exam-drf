@@ -26,11 +26,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         request_user = getattr(request, 'user', None)
 
-        # Prevent a doctor from booking an appointment with themselves
         if request_user and data.get('doctor') == request_user:
             raise serializers.ValidationError("Doctor cannot book appointment with themselves")
 
-        # Check if appointment is in the past (timezone-aware)
         if data.get('timeslot'):
             appointment_datetime = datetime.combine(data['timeslot'].date, data['timeslot'].start_time)
             if timezone.is_naive(appointment_datetime):

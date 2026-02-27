@@ -59,7 +59,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'clinic_api.core.wsgi.application'
 
-# Database
 DATABASES = {
     'default': {
         'ENGINE': config('DATABASE_ENGINE', default='django.db.backends.sqlite3'),
@@ -71,7 +70,6 @@ DATABASES = {
     }
 }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -87,7 +85,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -96,16 +93,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Custom User Model
 AUTH_USER_MODEL = 'users.User'
 
-# REST Framework Configuration
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -122,7 +115,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-# JWT Configuration
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -146,7 +138,6 @@ SIMPLE_JWT = {
     'JTI_CLAIM': 'jti',
 }
 
-# Swagger Configuration
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Clinic Appointment Booking API',
     'DESCRIPTION': 'API for managing clinic appointments with doctors and patients',
