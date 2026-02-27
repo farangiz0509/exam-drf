@@ -44,8 +44,6 @@ class IsOwnerOrAdmin(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_admin():
             return True
-        # some models expose ``user`` attribute, others have ``patient``/``doctor``
-        # we need to test all relevant fields, not bail out early when one exists
         user = request.user
         if hasattr(obj, 'user') and obj.user == user:
             return True

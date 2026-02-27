@@ -39,7 +39,6 @@ class Appointment(models.Model):
         self.clean()
         super().save(*args, **kwargs)
         
-        # Update timeslot availability
         if self.status == 'cancelled' and self.timeslot:
             self.timeslot.is_available = True
             self.timeslot.save()
