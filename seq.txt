@@ -4,4 +4,4 @@ pick 4ff7d84 exam
 pick 0ed8666 Clean up comments, fix syntax errors, ensure tests pass
 pick 09f34fc exam
 pick 2ed2497 Remove all inline comments and docstrings for clean code
-pick cceb1dc Merge branch 'main' of https://github.com/farangiz0509/exam-drf
+pick cceb1dc Merge branch main of https://github.com/farangiz0509/exam-drf
