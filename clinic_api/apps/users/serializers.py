@@ -6,7 +6,6 @@ from clinic_api.apps.patients.models import PatientProfile
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    """Serializer for user registration"""
     
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True, label='Password Confirmation')
@@ -50,7 +49,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for user details"""
     
     class Meta:
         model = User
@@ -59,7 +57,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for updating user"""
     
     class Meta:
         model = User

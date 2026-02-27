@@ -5,7 +5,6 @@ from clinic_api.apps.doctors.models import TimeSlot
 
 
 class Appointment(models.Model):
-    """Appointment model"""
     
     STATUS_CHOICES = (
         ('pending', 'Pending'),
@@ -29,16 +28,10 @@ class Appointment(models.Model):
         return f"Appointment: {self.patient.username} with Dr. {self.doctor.username} - {self.status}"
     
     def clean(self):
-        """Validate appointment"""
-        # Check if doctor is trying to book appointment with themselves
         if self.doctor == self.patient:
             raise ValidationError("Doctor cannot book appointment with themselves")
-        
-        # Check if timeslot is available
-        if self.timeslot and not self.timeslot.is_available:
+        if self.timeslot and not self.pk and not self.timeslot.is_available:
             raise ValidationError("This time slot is not available")
-        
-        # Check if patient is trying to book with different doctor
         if self.timeslot and self.timeslot.doctor != self.doctor:
             raise ValidationError("Time slot does not belong to this doctor")
     

@@ -6,8 +6,6 @@ from clinic_api.apps.users.serializers import UserSerializer
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    """Serializer for appointments"""
-    
     doctor_name = serializers.CharField(source='doctor.get_full_name', read_only=True)
     patient_name = serializers.CharField(source='patient.get_full_name', read_only=True)
     timeslot_date = serializers.CharField(source='timeslot.date', read_only=True)
@@ -25,7 +23,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
         return None
     
     def validate(self, data):
-        """Validate appointment"""
         request = self.context.get('request')
         request_user = getattr(request, 'user', None)
 
@@ -45,8 +42,6 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
 
 class AppointmentDetailSerializer(serializers.ModelSerializer):
-    """Details serializer for appointments"""
-    
     doctor = UserSerializer(read_only=True)
     patient = UserSerializer(read_only=True)
     
@@ -57,8 +52,6 @@ class AppointmentDetailSerializer(serializers.ModelSerializer):
 
 
 class AppointmentStatusUpdateSerializer(serializers.ModelSerializer):
-    """Serializer for updating appointment status"""
-    
     class Meta:
         model = Appointment
         fields = ['status']

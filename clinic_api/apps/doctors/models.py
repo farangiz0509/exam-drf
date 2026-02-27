@@ -3,8 +3,6 @@ from clinic_api.apps.users.models import User
 
 
 class DoctorProfile(models.Model):
-    """Doctor profile model"""
-    
     GENDER_CHOICES = (
         ('male', 'Male'),
         ('female', 'Female'),
@@ -26,8 +24,6 @@ class DoctorProfile(models.Model):
 
 
 class TimeSlot(models.Model):
-    """Time slot model for doctor schedules"""
-    
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='time_slots', limit_choices_to={'role': 'doctor'})
     date = models.DateField()
     start_time = models.TimeField()
@@ -45,5 +41,4 @@ class TimeSlot(models.Model):
         return f"{self.doctor.username} - {self.date} {self.start_time}-{self.end_time}"
     
     def is_overlap(self, other_start_time, other_end_time):
-        """Check if this time slot overlaps with another time slot"""
         return not (self.end_time <= other_start_time or self.start_time >= other_end_time)
